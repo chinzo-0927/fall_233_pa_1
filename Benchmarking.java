@@ -116,6 +116,9 @@ public class Benchmarking{
       System.out.println("The file is empty or don't have integer data values.");
       System.exit(0);
     }
+    fileScanner.close();
+    //Hello world yo
+
     System.out.println("The maximum integer from the given file is: " + max);
     System.out.println("The minimum integer from the given file is: " + min);
     System.out.println("The median value from the given file is: " + med);
