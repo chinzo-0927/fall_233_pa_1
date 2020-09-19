@@ -6,38 +6,40 @@ public class Benchmarking{
   //Take a file scanner and return a sorted linked list created from the elements of the Scanner
   private static LinkedList<Integer> createSortedList(Scanner fileScanner){
 
-  //START TIMER
-
+    //create the list and it's header
+    //file and the scanner are being checking inside main()
     LinkedList<Integer> list = new LinkedList<Integer>();
     int currentValue = fileScanner.nextInt();
     list.addFirst(currentValue);
+
+
+    //for every line in the scanner
     while(fileScanner.hasNextInt()){
 
       currentValue = fileScanner.nextInt();
       ListIterator iterator = list.listIterator(0);
 
       //see if the current value of the array can be set as the head
+      //if not iterate through the list to find the proper position in the linkedList
       if (currentValue <= list.getFirst()){
         list.addFirst(currentValue);
-      }
-      //if the current value can be added to the last
-      else if (currentValue > list.getLast()){
-        list.addLast(currentValue);
-      }
-      //if the current value is in between fist and last links
-      else {
+      } else {
         int linkIndex = 1;
         iterator = list.listIterator(1);
+
+        //find proper position for the current value
         while (iterator.hasNext() && currentValue > list.get(linkIndex)){
           linkIndex++;
           iterator.next();
         }
+
         list.add(linkIndex, currentValue);
       }
 
     }
+
+    //return the created linkedList
     return list;
-  //END TIMER
   }
 
 
@@ -55,10 +57,16 @@ public class Benchmarking{
       System.out.println(median);
     }
 
-
     return median;
+
   }
 
+  /*
+  Name: Chinzorig Batgerel
+  CPTS 233: ProgrammingAssignment #1
+  Date: 9/18/2020
+  gitRepo url: https://github.com/chinzo-0927/ma1_fall_233.git
+  */
   public static void main(String[] args){
 
     int min = 0;
@@ -71,8 +79,6 @@ public class Benchmarking{
 
     //input the file and
     //check if the file is valid
-
-
     Scanner fileScanner = null;
     try {
       String fileName = "";
@@ -89,36 +95,46 @@ public class Benchmarking{
       System.exit(0);
     }
 
-    //turn the given file into linkedList
-    if (fileScanner.hasNextInt()){
 
+    if (fileScanner.hasNextInt()){
+      //turn the given file into sorted linkedList
       long insert_start = System.nanoTime();
       LinkedList<Integer> list = createSortedList(fileScanner);
       long insert_end = System.nanoTime();
       time_insert = (insert_end - insert_start)/1000;
 
+      //using the linkedList finds the median
       long med_start = System.nanoTime();
       med = findMedian(list);
       long med_end = System.nanoTime();
       time_med = (med_end - med_start)/1000;
 
+      //using the linkedList finds the min.
+      //min is the head of the list.
       long min_start = System.nanoTime();
       min = list.getFirst();
       long min_end = System.nanoTime();
       time_min = (min_end - min_start)/1000;
 
+      //using the linkedList finds the max.
+      //max is the last link/node of the list.
       long max_start = System.nanoTime();
       max = list.getLast();
       long max_end = System.nanoTime();
       time_max = (max_end - max_start)/1000;
 
     } else {
+      //if the given file is empty or the value is not integer report it
+      //and exit the program
       System.out.println("The file is empty or don't have integer data values.");
       System.exit(0);
     }
-    fileScanner.close();
-    //Hello world yo
 
+    //close fileScanner for file safety
+    fileScanner.close();
+
+    //print out all the statistics
+    //time is being reported on microsecond level
     System.out.println("The maximum integer from the given file is: " + max);
     System.out.println("The minimum integer from the given file is: " + min);
     System.out.println("The median value from the given file is: " + med);
